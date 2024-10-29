@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+        }
+        .clock {
+            font-size: 24px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .calendar {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="text-center">
+        <h1>Welcome to Your Profile</h1>
+        <nav>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container mt-4">
+        <div class="clock" id="clock"></div>
+        <h2>Your Profile Information</h2>
+        <p>Here you can view and edit your profile details.</p>
+
+        <h2>Calendar</h2>
+        <div class="calendar" id="calendar"></div>
+    </main>
+    <footer class="text-center mt-4">
+        <p>&copy; 2024 Your Website</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Function to display the current time
+        function updateClock() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('clock').textContent = now.toLocaleTimeString([], options);
+        }
+
+        // Function to create a simple calendar for the current month
+        function createCalendar() {
+            const calendarElement = document.getElementById('calendar');
+            const date = new Date();
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let calendarHTML = '<table class="table table-bordered text-center"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr>';
+
+            // Fill in the days of the month
+            for (let i = 0; i < firstDay; i++) {
+                calendarHTML += '<td></td>';
+            }
+            for (let day = 1; day <= daysInMonth; day++) {
+                if ((day + firstDay - 1) % 7 === 0 && day !== 1) {
+                    calendarHTML += '</tr><tr>';
+                }
+                calendarHTML += `<td>${day}</td>`;
+            }
+            calendarHTML += '</tr></tbody></table>';
+            calendarElement.innerHTML = calendarHTML;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+        createCalendar(); // Initialize the calendar on page load
+    </script>
+</body>
+</html>
